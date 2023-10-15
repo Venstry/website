@@ -1,0 +1,145 @@
+<?php
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'studentresidencedb');
+
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Residence Application</title>
+    <style>
+        /* Add some basic styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5; /* Set a background color */
+        }
+
+        h2 {
+            color: #007BFF;
+            text-align: center;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        p {
+            text-align: center;
+            color: red; /* Change text color to red */
+        }
+
+        ul {
+            text-align: center;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+            list-style-type: none;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Add the skyscraper background image */
+        body {
+            background-image: url('https://www.spu.ac.za/wp-content/uploads/2019/07/spu-library-290719-1024x683.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome to the Student Residence Application</h2>
+
+    <p style="color: white;">When applying for residence, please use the residence numbers below:</p>
+    <ul style="color: white;">
+        <li>1 - Moroka</li>
+        <li>2 - Caritas</li>
+        <li>3 - Tauna</li>
+        <li>4 - Hannetjie</li>
+        <li>5 - Umnandi</li>
+        <li>6 - Rathekga</li>
+        <li>7 - Mohodi</li>
+        <li>8 - Off campus</li>
+    </ul>
+
+    <form action="submit_student.php" method="post">
+        <label for="first_name">First Name:</label><br>
+        <input type="text" id="first_name" name="first_name"><br>
+        <label for="last_name">Last Name:</label><br>
+        <input type="text" id="last_name" name="last_name"><br>
+        <label for="student_id">Student ID:</label><br>
+        <input type="text" id="student_id" name="student_id"><br>
+        <label for="residence_choice">Residence Choice:</label><br>
+        <input type="text" id="residence_choice" name="residence_choice"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+<?php
+include('db.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $studentID = $_POST['student_id'];
+    $residenceChoice = $_POST['residence_choice'];
+
+    
+    $sql = "INSERT INTO StudentDetails (StudentID, FirstName, LastName, ResidenceChoice)
+            VALUES ('$studentID', '$firstName', '$lastName', '$residenceChoice')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Student information inserted successfully.";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+$conn->close();
+?>
