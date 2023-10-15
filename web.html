@@ -11,6 +11,30 @@ if ($conn->connect_error) {
 }
 ?>
 
+<?php
+include('db.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $studentID = $_POST['student_id'];
+    $residenceChoice = $_POST['residence_choice'];
+
+    
+    $sql = "INSERT INTO StudentDetails (StudentID, FirstName, LastName, ResidenceChoice)
+            VALUES ('$studentID', '$firstName', '$lastName', '$residenceChoice')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Student information inserted successfully.";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -120,26 +144,3 @@ if ($conn->connect_error) {
 </body>
 </html>
 
-<?php
-include('db.php');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $firstName = $_POST['first_name'];
-    $lastName = $_POST['last_name'];
-    $studentID = $_POST['student_id'];
-    $residenceChoice = $_POST['residence_choice'];
-
-    
-    $sql = "INSERT INTO StudentDetails (StudentID, FirstName, LastName, ResidenceChoice)
-            VALUES ('$studentID', '$firstName', '$lastName', '$residenceChoice')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Student information inserted successfully.";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-$conn->close();
-?>
